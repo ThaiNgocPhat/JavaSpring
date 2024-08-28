@@ -1,85 +1,86 @@
-create database Baitap5;
-use Baitap5;
+CREATE DATABASE Baitap5;
+USE Baitap5;
 
-create table account(
-    id int primary key auto_increment,
-    username varchar(255) not null unique,
-    password varchar(255) not null,
-    address varchar(255) not null,
-    status bit
+
+CREATE TABLE account (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    status BIT
 );
 
-create table bill(
-    id int primary key auto_increment,
-    bill_type bit,
-    account_id int,
-    create datetime,
-    auth_date datetime,
-    foreign key (account_id) references account(id)
+CREATE TABLE bill (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    bill_type BIT,
+    account_id INT,
+    created DATETIME,
+    auth_date DATETIME,
+    FOREIGN KEY (account_id) REFERENCES account(id)
 );
 
-create table product(
-    id int primary key auto_increment,
-    name varchar(255) not null,
-    create date,
-    price decimal(10,2) not null,
-    stock int not null,
-    status bit
-);
-create table bill_details(
-    id int primary key auto_increment,
-    bill_id int,
-    product_id int,
-    quantity int not null,
-    price decimal(10,2) not null,
-    foreign key (bill_id) references bill(id),
-    foreign key (product_id) references product(id)
+CREATE TABLE product (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    created DATE,
+    price DECIMAL(10,2) NOT NULL,
+    stock INT NOT NULL,
+    status BIT
 );
 
-insert into account(username, password, address, status) values
-('Hùng', 123456, 'Nghệ An', true),
-('Cường', 654321, 'Hà Nội', true),
-('Bách', 135790, 'Đà Nẵng', true);
+CREATE TABLE bill_details (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    bill_id INT,
+    product_id INT,
+    quantity INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (bill_id) REFERENCES bill(id),
+    FOREIGN KEY (product_id) REFERENCES product(id)
+);
 
-insert into bill(bill_type, account_id, create, auth_date) values
-(0, 1, str_to_date('11/02/2022', '%d/%m/%Y'), str_to_date('12/03/2022', '%d/%m/%Y')),
-(0, 1, str_to_date('05/10/2023', '%d/%m/%Y'), str_to_date('10/10/2023', '%d/%m/%Y')),
-(1, 2, str_to_date('15/05/2024', '%d/%m/%Y'), str_to_date('20/05/2024', '%d/%m/%Y')),
-(1, 3, str_to_date('01/02/2022', '%d/%m/%Y'), str_to_date('10/02/2022', '%d/%m/%Y'));
+INSERT INTO account(username, password, address, status) VALUES
+('Hùng', 123456, 'Nghệ An', TRUE),
+('Cường', 654321, 'Hà Nội', TRUE),
+('Bách', 135790, 'Đà Nẵng', TRUE);
 
-insert into product(name, create, price, stock, status) values
-("Quần dài", str_to_date('12/03/2022', '%d/%m/%Y'), 1200, 5, true),
-("Áo dài", str_to_date('15/03/2023', '%d/%m/%Y'), 1500, 8, true),
-("Mũ cối", str_to_date('08/03/1999', '%d/%m/%Y'), 1600, 10, true);
+INSERT INTO bill(bill_type, account_id, created, auth_date) VALUES
+(0, 1, STR_TO_DATE('11/02/2022', '%d/%m/%Y'), STR_TO_DATE('12/03/2022', '%d/%m/%Y')),
+(0, 1, STR_TO_DATE('05/10/2023', '%d/%m/%Y'), STR_TO_DATE('10/10/2023', '%d/%m/%Y')),
+(1, 2, STR_TO_DATE('15/05/2024', '%d/%m/%Y'), STR_TO_DATE('20/05/2024', '%d/%m/%Y')),
+(1, 3, STR_TO_DATE('01/02/2022', '%d/%m/%Y'), STR_TO_DATE('10/02/2022', '%d/%m/%Y'));
 
-insert into bill_details(bill_id, product_id, quantity, price) values
+INSERT INTO product(name, created, price, stock, status) VALUES
+("Quần dài", STR_TO_DATE('12/03/2022', '%d/%m/%Y'), 1200, 5, TRUE),
+("Áo dài", STR_TO_DATE('15/03/2023', '%d/%m/%Y'), 1500, 8, TRUE),
+("Mũ cối", STR_TO_DATE('08/03/1999', '%d/%m/%Y'), 1600, 10, TRUE);
+
+INSERT INTO bill_details(bill_id, product_id, quantity, price) VALUES
 (1, 1, 3, 1200),
-(1, 2, 4, 1500),
-(2, 1, 1, 1200),
-(3, 2, 4, 1500),
+(2, 2, 4, 1500),
+(3, 1, 1, 1200),
+(4, 2, 4, 1500),
 (4, 3, 7, 1600);
 
--- Hiển thị tất cả account và sắp xếp theo user_name theo chiều giảm dần
+-- Display all accounts sorted by username in descending order
 SELECT * FROM account
 ORDER BY username DESC;
 
--- Hiển thị tất cả bill từ ngày 11/2/2023 đến 15/5/2023
+-- Display all bills from 11/02/2023 to 15/05/2023
 SELECT * FROM bill
-WHERE create BETWEEN str_to_date('11/02/2023', '%d/%m/%Y') AND str_to_date('15/05/2023', '%d/%m/%Y');
+WHERE created BETWEEN STR_TO_DATE('11/02/2023', '%d/%m/%Y') AND STR_TO_DATE('15/05/2023', '%d/%m/%Y');
 
--- Hiển thị tất cả bill_detail theo bill_id
+-- Display all bill_details sorted by bill_id
 SELECT * FROM bill_details
 ORDER BY bill_id;
 
--- Hiển thị tất cả product theo tên và sắp xếp theo chiều giảm dần
+-- Display all products sorted by name in descending order
 SELECT * FROM product
 ORDER BY name DESC;
 
--- Hiển thị tất cả product có số lượng lớn hơn 10
+-- Display all products with stock greater than 10
 SELECT * FROM product
 WHERE stock > 10;
 
--- Hiển thị tất cả product còn hoạt động (dựa vào product_status)
+-- Display all active products (status = true)
 SELECT * FROM product
-WHERE status = true;
-
+WHERE status = TRUE;

@@ -1,6 +1,7 @@
 create database Baitap3;
 use Baitap3;
 
+
 create table PhieuXuat(
     soPx int primary key auto_increment,
     ngayXuat datetime
@@ -25,13 +26,14 @@ create table ChiTietDonDatHang(
 create table VatTu(
     maVT int primary key auto_increment,
     tenVT varchar(255)
-)
+);
 
 create table DonDatHang(
     soHD int primary key auto_increment,
     maNCC int,
-    ngayDH datetime
-)
+    ngayDH datetime,
+    index (maNCC) -- Add an index to the maNCC column
+);
 
 create table PhieuNhap(
     soPn int primary key auto_increment,
@@ -48,11 +50,10 @@ create table PhieuNhapChiTiet(
 );
 
 create table NhaCungCap(
-    maNCC int,
+    maNCC int primary key auto_increment,
     tenNCC varchar(255),
     diachi varchar(255),
-    soDienThoai varchar(20),
-    primary key (maNCC) references DonDatHang(maNCC)
+    soDienThoai varchar(20)
 );
 
 INSERT INTO VatTu (tenVT) VALUES 
@@ -138,11 +139,13 @@ GROUP BY maVT
 ORDER BY totalSold DESC;
 
 -- Tìm danh sách vật tư có trong kho nhiều nhất
-SELECT maVT, SUM(soLuongNhap - soLuongXuat) AS stockRemaining
+SELECT PhieuNhapChiTiet.maVT, 
+       SUM(PhieuNhapChiTiet.soLuongNhap - IFNULL(PhieuXuatChiTiet.soLuongXuat, 0)) AS stockRemaining
 FROM PhieuNhapChiTiet 
 LEFT JOIN PhieuXuatChiTiet ON PhieuNhapChiTiet.maVT = PhieuXuatChiTiet.maVT
 GROUP BY PhieuNhapChiTiet.maVT
 ORDER BY stockRemaining DESC;
+
 
 --  Tìm ra danh sách nhà cung cấp có đơn hàng từ ngày 12/2/2024 đến 22/2/2024:
 SELECT DISTINCT NhaCungCap.tenNCC, DonDatHang.ngayDH

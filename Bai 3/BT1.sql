@@ -1,5 +1,6 @@
-create database Baitai1;
-use Baitai1;
+create database Baitap1;
+use Baitap1;
+drop database Baitap1;
 
 create table color(
     id int primary key auto_increment,
@@ -10,7 +11,7 @@ create table color(
 create table product(
     id int primary key auto_increment,
     name varchar(100) not null,
-    create date not null
+    created date not null
 );
 
 create table size(
@@ -45,7 +46,7 @@ insert into size(name, status) values
 ('XL', true),
 ('XXL', true);
 
-insert into product(name, create_date) values
+insert into product(name, created) values
 ('quần dài', str_to_date('12/5/1990', '%d/%m/%Y')),
 ('áo dài', str_to_date('05/10/2005', '%d/%m/%Y')),
 ('mũ phớt', str_to_date('07/07/1995', '%d/%m/%Y'));
@@ -60,16 +61,16 @@ insert into product_details(product_id, color_id, size_id, price, stock, status)
 (2, 3, 5, 2000, 10, false);
 
 
---hiển thị thông sản phẩm có giá hơn 1200
+-- hiển thị thông sản phẩm có giá hơn 1200
 select * from product_details
 where price > 1200;
 
 -- chọn bảng màu
 select * from color;
 
---chọn bảng size
+-- chọn bảng size
 select * from size;
 
---hiển thị toàn bộ thông sản phẩm có id là 1
+-- hiển thị toàn bộ thông sản phẩm có id là 1
 select * from product_details
 where product_id = 1;

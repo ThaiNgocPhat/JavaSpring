@@ -1,5 +1,5 @@
-create database Baitai2;
-use Baitai2;
+create database Baitap2;
+use Baitap2;
 
 create table customer(
     cid int primary key auto_increment,
@@ -24,7 +24,7 @@ create table products(
 create table orderDetail(
     oid int,
     pid int,
-    odQuantity,
+    odQuantity int,
     foreign key (oid) references orders(oid),
     foreign key (pid) references products(pid)
 );
