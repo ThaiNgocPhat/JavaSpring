@@ -133,26 +133,25 @@ INSERT INTO PhieuNhapChiTiet (soPn, maVT, donGiaNhap, soLuongNhap) VALUES
 (5, 10, 40000, 150);
 
 -- Hiển thị tất cả vật tự dựa vào phiếu xuất có số lượng lớn hơn 10
-SELECT DISTINCT v.maVT, v.tenVT
+SELECT v.maVT, v.tenVT
 FROM VatTu v
 JOIN PhieuXuatChiTiet pxct ON v.maVT = pxct.maVT
 WHERE pxct.soLuongXuat > 10;
 
 -- Hiển thị tất cả vật tư mua vào ngày 12/2/2023
-SELECT DISTINCT v.maVT, v.tenVT
-FROM VatTu v
-JOIN ChiTietDonDatHang ctdh ON v.maVT = ctdh.maVt
-JOIN DonDatHang ddh ON ctdh.soHD = ddh.soHD
-WHERE DATE(ddh.ngayDH) = '2024-02-15';
-
+select v.* from VatTu v JOIN PhieuNhapChiTiet ct
+ON v.maVT = ct.maVT
+JOIN PhieuNhap p
+ON ct.soPn = p.soPn
+WHERE p.ngayNhap = '2023-12-02';
 -- Hiển thị tất cả vật tư được nhập vào với đơn giá lớn hơn 1.200.000
-SELECT DISTINCT v.maVT, v.tenVT
+SELECT v.maVT, v.tenVT
 FROM VatTu v
 JOIN PhieuNhapChiTiet pnc ON v.maVT = pnc.maVT
 WHERE pnc.donGiaNhap > 50000;
 
 -- Hiển thị tất cả vật tư được dựa vào phiếu xuất có số lượng lớn hơn 5
-SELECT DISTINCT v.maVT, v.tenVT
+SELECT v.maVT, v.tenVT
 FROM VatTu v
 JOIN PhieuXuatChiTiet pxct ON v.maVT = pxct.maVT
 WHERE pxct.soLuongXuat > 5;
