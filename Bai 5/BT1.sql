@@ -89,4 +89,29 @@ DELIMITER ;
 
 
 -- Tạo store procedure hiển thị người dùng nào mua sản phẩm “May Giat” ít nhất
+DELIMITER //
 
+CREATE PROCEDURE get_customers_min_quantity_for_product()
+BEGIN
+    SELECT c.cid, c.cName
+    FROM customer c
+    JOIN orders o ON c.cid = o.cid
+    JOIN orderDetail od ON o.oid = od.oid
+    JOIN products p ON od.pid = p.pid
+    WHERE p.pName = 'May giat'
+    GROUP BY c.cid, c.cName
+    HAVING SUM(od.odQuantity) = (
+        SELECT MIN(total_quantity)
+        FROM (
+            SELECT c.cid, SUM(od.odQuantity) AS total_quantity
+            FROM customer c
+            JOIN orders o ON c.cid = o.cid
+            JOIN orderDetail od ON o.oid = od.oid
+            JOIN products p ON od.pid = p.pid
+            WHERE p.pName = 'May giat'
+            GROUP BY c.cid
+        ) AS subquery
+    );
+END //
+
+DELIMITER ;

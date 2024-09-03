@@ -112,4 +112,34 @@ END //
 DELIMITER ;
 
 -- Tạo store procedure thêm mới student và trả ra id vừa mới thêm
+DELIMITER //
 
+CREATE PROCEDURE add_student(
+    IN p_student_name VARCHAR(100),
+    IN p_address VARCHAR(255),
+    IN p_phone VARCHAR(11),
+    IN p_class_id INT,
+    IN p_status BIT,
+    OUT p_student_id INT
+)
+BEGIN
+    INSERT INTO students (student_name, address, phone, class_id, status)
+    VALUES (p_student_name, p_address, p_phone, p_class_id, p_status);
+
+    SET p_student_id = LAST_INSERT_ID();
+END //
+
+DELIMITER ;
+
+-- Tạo store procedure hiển thị subject chưa được ai thi
+DELIMITER //
+
+CREATE PROCEDURE get_subjects_not_taken()
+BEGIN
+    SELECT s.subject_id, s.subject_name
+    FROM subject s
+    LEFT JOIN mark m ON s.subject_id = m.subject_id
+    WHERE m.subject_id IS NULL;
+END //
+
+DELIMITER ;
