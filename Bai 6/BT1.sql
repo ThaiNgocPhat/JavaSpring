@@ -29,6 +29,27 @@ CREATE TABLE shopping_cart (
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
+-- Thêm dữ liệu vào bảng users
+INSERT INTO users (name, address, phone, dateOfBirth, status) VALUES 
+('Nguyen Van A', '123 Đường ABC, Thành phố X', '0123456789', '1990-01-01', 1),
+('Le Thi B', '456 Đường DEF, Thành phố Y', '0987654321', '1992-05-15', 1);
+
+-- Thêm dữ liệu vào bảng products
+INSERT INTO products (name, price, stock, status) VALUES 
+('Sản phẩm A', 100.00, 50, 1),
+('Sản phẩm B', 200.00, 30, 1);
+
+-- Thêm dữ liệu vào bảng shopping_cart
+INSERT INTO shopping_cart (user_id, product_id, quantity, amount) VALUES 
+(1, 1, 2, 200.00),
+(2, 2, 1, 200.00);
+
+-- Kiểm tra dữ liệu trong các bảng
+SELECT * FROM users;
+SELECT * FROM products;
+SELECT * FROM shopping_cart;
+
+
 -- Tạo Trigger khi thay đổi giá của sản phẩm thì amount (tổng giá) cũng sẽ phải cập nhật lại
 DELIMITER //
 
@@ -45,7 +66,7 @@ END;
 
 DELIMITER ;
 
--- Tạo trigger khi xóa product thì những dữ liệu ở bảng shopping_cart có chứa product bị xóa thì cũng phải xóa theo
+-- Tạo Trigger khi xóa product thì những dữ liệu ở bảng shopping_cart có chứa product bị xóa thì cũng phải xóa theo
 DELIMITER //
 
 CREATE TRIGGER delete_shopping_cart_entries_on_product_delete
